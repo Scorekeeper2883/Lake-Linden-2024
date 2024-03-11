@@ -9,11 +9,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 
 public class PrimitiveArmPivot extends Command {
-	private DoubleSupplier speed;
+	private DoubleSupplier speed1, speed2;
 
 	/** Creates a new PrimitiveArmPivot. */
-	public PrimitiveArmPivot(DoubleSupplier pSpeed) {
-		speed = pSpeed;
+	public PrimitiveArmPivot(DoubleSupplier pSpeed1, DoubleSupplier pSpeed2) {
+		speed1 = pSpeed1;
+		speed2 = pSpeed2;
 
 		addRequirements(Constants.arm);
 	}
@@ -26,7 +27,15 @@ public class PrimitiveArmPivot extends Command {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		Constants.arm.PrimitiveArmPivot(speed.getAsDouble());
+		double speed = speed1.getAsDouble() - speed2.getAsDouble();
+
+		if (Constants.arm.getAngle() > 140 && speed > 0) {
+			speed = 0;
+		} else if (Constants.arm.getAngle() < 80 && speed < 0) {
+			speed = 0;
+		}
+
+		Constants.arm.PrimitiveArmPivot(speed);
 	}
 
 	// Called once the command ends or is interrupted.

@@ -57,7 +57,7 @@ public class Robot extends TimedRobot {
 		// block in order for anything in the Command-based framework to work.
 		CommandScheduler.getInstance().run();
 
-		SmartDashboard.putNumber("Left Arm Encoder POS", Constants.arm.getAngle());
+		SmartDashboard.putNumber("Arm Encoder POS", Constants.arm.getAngle());
 	}
 
 	/**

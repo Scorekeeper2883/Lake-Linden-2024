@@ -16,16 +16,14 @@ public class Shooter extends SubsystemBase {
 
 	public Shooter() {
 		leftShooterMotor.setInverted(false);
-		rightShooterMotor.setInverted(true);
+		rightShooterMotor.setInverted(false);
 
 		leftShooterMotor.setIdleMode(IdleMode.kBrake);
 		rightShooterMotor.setIdleMode(IdleMode.kBrake);
 	}
 
 	public void Shoot(double pSpeed) {
-		if (pSpeed > 0) {
 			leftShooterMotor.set(pSpeed);
 			rightShooterMotor.set(pSpeed);
-		}
 	}
 }

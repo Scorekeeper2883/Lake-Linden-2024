@@ -11,13 +11,13 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+/**
+ * Arm controls the pivot point of the robot.
+ */
 public class Arm extends SubsystemBase {
 	private static final CANSparkMax leftArmMotor = new CANSparkMax(Constants.leftArm, MotorType.kBrushless);
 	private static final CANSparkMax rightArmMotor = new CANSparkMax(Constants.rightArm, MotorType.kBrushless);
-	private static final RelativeEncoder encodeArm = leftArmMotor.getAlternateEncoder(42);
-	private static final double armGearRatio = 248 / 1;
-	private static final double upperArmBound = 90;
-	private static final double lowerArmBound = -10;
+	private static final RelativeEncoder encodeArm = leftArmMotor.getEncoder();
 
 	public Arm() {
 		leftArmMotor.setInverted(true);
@@ -26,27 +26,15 @@ public class Arm extends SubsystemBase {
 		leftArmMotor.setIdleMode(IdleMode.kBrake);
 		rightArmMotor.setIdleMode(IdleMode.kBrake);
 
-		encodeArm.setPositionConversionFactor(360 / encodeArm.getCountsPerRevolution() / armGearRatio);
-		encodeArm.setPosition(90);	// Make sure the arm starts straight up!
+		encodeArm.setPosition(80);	// Make sure the arm starts straight up!
 	}
 
 	public void PrimitiveArmPivot(double pSpeed) {
-		if (pSpeed > 0 && getAngle() < upperArmBound) {
 			leftArmMotor.set(pSpeed);
 			rightArmMotor.set(pSpeed);
-		} else if (pSpeed < 0 && getAngle() > lowerArmBound) {
-			leftArmMotor.set(pSpeed);
-			rightArmMotor.set(pSpeed);
-		}
 	}
 
 	public double getAngle() {
 		return encodeArm.getPosition();
-	}
-
-	public void setAngle(double pAngle) {
-		while (pAngle - getAngle() != 0) {
-			PrimitiveArmPivot(Constants.checkSign(pAngle - getAngle()) * 0.45);
-		}
 	}
 }

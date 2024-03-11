@@ -8,20 +8,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 
 public class Shoot extends Command {
-	private double speed, angle;
+	private double speed;
 
 	public Shoot(double pSpeed) {
 		speed = pSpeed;
-		angle = Constants.arm.getAngle();
 
-		addRequirements(Constants.shooter, Constants.arm);
-	}
-
-	public Shoot(double pSpeed, double pAngle) {
-		speed = pSpeed;
-		angle = pAngle;
-
-		addRequirements(Constants.shooter, Constants.arm);
+		addRequirements(Constants.shooter);
 	}
 
 	// Called when the command is initially scheduled.
@@ -32,7 +24,6 @@ public class Shoot extends Command {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		Constants.arm.setAngle(angle);
 		Constants.shooter.Shoot(speed);
 	}
 

@@ -1,42 +1,47 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 
-public class takeIn extends Command {
-	private double speed;
+public class ArmAngle extends Command {
+	private final double angle;
+	private boolean done;
 
-	public takeIn(double pSpeed) {
-		speed = pSpeed;
+	public ArmAngle(double pAngle) {
+		angle = pAngle;
 
-		addRequirements(Constants.intake);
+		addRequirements(Constants.arm);
 	}
-
 
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
+		done = false;
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		Constants.intake.In(speed);
+		double tolerance = 5;
+
+		if (angle + tolerance < Constants.arm.getAngle()) {
+			Constants.arm.PrimitiveArmPivot(-0.3);
+		} else if (Constants.arm.getAngle() < angle - tolerance) {
+			Constants.arm.PrimitiveArmPivot(0.3);
+		} else {
+			done = true;
+		}
 	}
 
 	// Called once the command ends or is interrupted.
 	@Override
 	public void end(boolean interrupted) {
-		Constants.intake.In(0);
+		Constants.arm.PrimitiveArmPivot(0);
 	}
 
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
-		return false;
+		return done;
 	}
 }

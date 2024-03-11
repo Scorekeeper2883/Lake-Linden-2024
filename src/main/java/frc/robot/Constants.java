@@ -28,9 +28,11 @@ public final class Constants {
 	public static Intake intake = new Intake();
 	public static Shooter shooter = new Shooter();
 
-	/* Controller and Axis IDs */
+	/* Controller IDs */
 	public static final int driverID = 0;
 	public static final int operatorID = 1;
+
+	/* Axis IDs */
 	public static final int speedInput = 1;
 	public static final int rotationInput = 4;
 	public static final int armUp = 2;
@@ -38,9 +40,10 @@ public final class Constants {
 
 	/* Button IDS */
 	public static final int OPShoot = 1;
+	public static final int OPSpeaker = 5;
+	public static final int OPAmp = 6;
 	public static final int OPFloorIntake = 2;
-	public static final int OPSpeaker = 3;
-	public static final int OPReverseIntake = 999;
+	public static final int OPReverseIntake = 4;
 
 	/* Motor IDs */
 	public static final int leftFront = 3;
@@ -53,6 +56,12 @@ public final class Constants {
 	public static final int rightShooter = 8;
 	public static final int intakeID = 9;
 
+	/**
+	 * Returns Polarity:
+	 * 	1 for positive,
+	 * 	-1 for negative,
+	 * 	0 otherwise.
+	 */
 	public static int checkSign(double num) {
 		if (num > 0) {
 			return 1;

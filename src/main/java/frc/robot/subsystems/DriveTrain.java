@@ -4,8 +4,8 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -23,10 +23,10 @@ public class DriveTrain extends SubsystemBase {
 
 	public DriveTrain() {
 		/* Motor Invert Settings */
-		leftFrontMotor.setInverted(true);
-		leftBackMotor.setInverted(true);
-		rightFrontMotor.setInverted(false);
-		rightBackMotor.setInverted(false);
+		leftFrontMotor.setInverted(false);
+		leftBackMotor.setInverted(false);
+		rightFrontMotor.setInverted(true);
+		rightBackMotor.setInverted(true);
 
 		/* Motor Neutral Settings */
 		leftFrontMotor.setNeutralMode(NeutralMode.Brake);
@@ -35,18 +35,18 @@ public class DriveTrain extends SubsystemBase {
 		rightBackMotor.setNeutralMode(NeutralMode.Brake);
 
 		/* Declares Motor's Leader (Who It Follows) */
-		leftBackMotor.follow(leftBackMotor);
+		leftBackMotor.follow(leftFrontMotor);
 		rightBackMotor.follow(rightFrontMotor);
 	}
 
 	/**
 	 * Drive method for chassis control.
 	 * 
-	 * @param pSpeed    - foward/backwards
+	 * @param pSpeed - foward/backwards
 	 * @param pRotation - left/right steering
 	 */
 	public void Drive(double pSpeed, double pRotation) {
-		leftFrontMotor.set(VictorSPXControlMode.Velocity, pSpeed);
-		rightFrontMotor.set(VictorSPXControlMode.Velocity, pRotation);
+		leftFrontMotor.set(ControlMode.PercentOutput, pSpeed);
+		rightFrontMotor.set(ControlMode.PercentOutput, pRotation);
 	}
 }

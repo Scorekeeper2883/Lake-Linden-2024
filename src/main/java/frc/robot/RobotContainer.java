@@ -10,8 +10,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.ArmAngle;
 import frc.robot.commands.Autos;
 import frc.robot.commands.PrimitiveArmPivot;
 import frc.robot.commands.Shoot;
@@ -38,7 +42,7 @@ public class RobotContainer {
 
 		/* Subsystem Default Command */
 		Constants.driveTrain.setDefaultCommand(new StickDrive(() -> MathUtil.applyDeadband(-driverController.getRawAxis(Constants.speedInput), 0.2), () -> MathUtil.applyDeadband(driverController.getRawAxis(Constants.rotationInput), 0.2)));
-		Constants.arm.setDefaultCommand(new PrimitiveArmPivot(() -> 0.4 * (MathUtil.applyDeadband(operatorController.getRawAxis(Constants.armUp), 0.2) - MathUtil.applyDeadband(operatorController.getRawAxis(Constants.armDown), 0.2))));
+		Constants.arm.setDefaultCommand(new PrimitiveArmPivot(() -> MathUtil.applyDeadband(operatorController.getRawAxis(Constants.armUp), 0.2), ()-> MathUtil.applyDeadband(operatorController.getRawAxis(Constants.armDown), 0.2)));
 
 		/* Autonomous Selection */
 		autonomous.setDefaultOption("Default Auto", Commands.none());
@@ -61,15 +65,33 @@ public class RobotContainer {
 	 * joysticks}.
 	 */
 	private void configureBindings() {
-		final JoystickButton shootHighPow = new JoystickButton(operatorController, Constants.OPShoot);
-		final JoystickButton speaker = new JoystickButton(operatorController, Constants.OPSpeaker);
+		final JoystickButton shootHigh = new JoystickButton(operatorController, Constants.OPShoot);
+		final JoystickButton shootSpeaker = new JoystickButton(operatorController, Constants.OPSpeaker);
+		final JoystickButton shootAmp = new JoystickButton(operatorController, Constants.OPAmp);
 		final JoystickButton floorIntake = new JoystickButton(operatorController, Constants.OPFloorIntake);
 		final JoystickButton reverseIntake = new JoystickButton(operatorController, Constants.OPReverseIntake);
 
-		shootHighPow.onTrue(new Shoot(1.0)).onFalse(new Shoot(0));
-		speaker.onTrue(new Shoot(1.0, 60)).onFalse(new Shoot(0));
-		floorIntake.onTrue(new takeIn(1.0, -10)).onFalse(new takeIn(0));
-		reverseIntake.onTrue(new takeIn(-0.8)).onFalse(new takeIn(0));
+		shootHigh.whileTrue(new ParallelCommandGroup(
+													new Shoot(0.4),
+													new SequentialCommandGroup(
+														new WaitCommand(0.5),
+														new takeIn(0.4))));
+		shootSpeaker.whileTrue(new ParallelCommandGroup(
+														new Shoot(0.4),
+														new SequentialCommandGroup(
+															new ArmAngle(120),
+															new WaitCommand(0.5),
+															new takeIn(0.4))));
+		shootAmp.whileTrue(new ParallelCommandGroup(
+												new Shoot(0.4),
+												new SequentialCommandGroup(
+													new ArmAngle(80),
+													new WaitCommand(0.5),
+													new takeIn(0.4))));
+		floorIntake.whileTrue(new SequentialCommandGroup(
+														new ArmAngle(140),
+														new takeIn(0.4)));
+		reverseIntake.whileTrue(new takeIn(-0.4));
 	}
 
 	/**
@@ -78,7 +100,6 @@ public class RobotContainer {
 	 * @return the command to run in autonomous
 	 */
 	public Command getAutonomousCommand() {
-		// An example command will be run in autonomous
 		return autonomous.getSelected();
 	}
 }
