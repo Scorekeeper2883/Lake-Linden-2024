@@ -18,7 +18,7 @@ public class StickDrive extends Command {
 	/**
 	 * Creates a new StickDrive.
 	 * 
-	 * @param pSpeed    - See DriveTrain.Drive() pSpeed.
+	 * @param pSpeed - See DriveTrain.Drive() pSpeed.
 	 * @param pRotation - See DriveTrain.Drive() pRotation.
 	 */
 	public StickDrive(DoubleSupplier pSpeed, DoubleSupplier pRotation) {

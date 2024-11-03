@@ -17,7 +17,7 @@ public class AutoDrive extends Command {
 	/**
 	 * Creates a new AutoDrive.
 	 * 
-	 * @param pSpeed    - See DriveTrain.Drive() pSpeed.
+	 * @param pSpeed - See DriveTrain.Drive() pSpeed.
 	 * @param pRotation - See DriveTrain.Drive() pRotation.
 	 */
 	public AutoDrive(double pSpeed, double pRotation) {

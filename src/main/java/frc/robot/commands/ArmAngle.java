@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 
 public class ArmAngle extends Command {
-	private final double angle;
+	private double angle;
 	private boolean done;
 
 	public ArmAngle(double pAngle) {
@@ -24,11 +24,12 @@ public class ArmAngle extends Command {
 	public void execute() {
 		double tolerance = 5;
 
-		if (angle + tolerance < Constants.arm.getAngle()) {
-			Constants.arm.PrimitiveArmPivot(-0.3);
-		} else if (Constants.arm.getAngle() < angle - tolerance) {
-			Constants.arm.PrimitiveArmPivot(0.3);
+		if(angle + tolerance < Constants.arm.getAngle()) {
+			Constants.arm.primitiveArmPivot(-0.3);
+		} else if(Constants.arm.getAngle() < angle - tolerance) {
+			Constants.arm.primitiveArmPivot(0.3);
 		} else {
+			Constants.arm.primitiveArmPivot(0);
 			done = true;
 		}
 	}
@@ -36,7 +37,7 @@ public class ArmAngle extends Command {
 	// Called once the command ends or is interrupted.
 	@Override
 	public void end(boolean interrupted) {
-		Constants.arm.PrimitiveArmPivot(0);
+		Constants.arm.primitiveArmPivot(0);
 	}
 
 	// Returns true when the command should end.

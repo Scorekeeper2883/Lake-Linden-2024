@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ArmAngle;
+import frc.robot.commands.AngleReset;
 import frc.robot.commands.Autos;
 import frc.robot.commands.PrimitiveArmPivot;
 import frc.robot.commands.Shoot;
@@ -65,33 +66,35 @@ public class RobotContainer {
 	 * joysticks}.
 	 */
 	private void configureBindings() {
-		final JoystickButton shootHigh = new JoystickButton(operatorController, Constants.OPShoot);
+		final JoystickButton shoot = new JoystickButton(operatorController, Constants.OPShoot);
 		final JoystickButton shootSpeaker = new JoystickButton(operatorController, Constants.OPSpeaker);
 		final JoystickButton shootAmp = new JoystickButton(operatorController, Constants.OPAmp);
 		final JoystickButton floorIntake = new JoystickButton(operatorController, Constants.OPFloorIntake);
 		final JoystickButton reverseIntake = new JoystickButton(operatorController, Constants.OPReverseIntake);
+		final JoystickButton resetArm = new JoystickButton(operatorController,Constants.OPResetArm);
 
-		shootHigh.whileTrue(new ParallelCommandGroup(
+		shoot.whileTrue(new ParallelCommandGroup(
 													new Shoot(0.4),
 													new SequentialCommandGroup(
 														new WaitCommand(0.5),
-														new takeIn(0.4))));
+														new takeIn(0.8))));
 		shootSpeaker.whileTrue(new ParallelCommandGroup(
 														new Shoot(0.4),
 														new SequentialCommandGroup(
 															new ArmAngle(120),
 															new WaitCommand(0.5),
-															new takeIn(0.4))));
+															new takeIn(0.8))));
 		shootAmp.whileTrue(new ParallelCommandGroup(
-												new Shoot(0.4),
+												new Shoot(0.1),
 												new SequentialCommandGroup(
-													new ArmAngle(80),
+													new ArmAngle(75),
 													new WaitCommand(0.5),
-													new takeIn(0.4))));
+													new takeIn(0.8))));
 		floorIntake.whileTrue(new SequentialCommandGroup(
 														new ArmAngle(140),
-														new takeIn(0.4)));
-		reverseIntake.whileTrue(new takeIn(-0.4));
+														new takeIn(0.8)));
+		reverseIntake.whileTrue(new takeIn(-0.6));
+		resetArm.onTrue(new AngleReset());
 	}
 
 	/**

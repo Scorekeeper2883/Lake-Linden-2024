@@ -11,30 +11,38 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-/**
- * Arm controls the pivot point of the robot.
- */
 public class Arm extends SubsystemBase {
 	private static final CANSparkMax leftArmMotor = new CANSparkMax(Constants.leftArm, MotorType.kBrushless);
 	private static final CANSparkMax rightArmMotor = new CANSparkMax(Constants.rightArm, MotorType.kBrushless);
 	private static final RelativeEncoder encodeArm = leftArmMotor.getEncoder();
+	// private final double lowerLimit = -5;
+	// private final double upperLimit = 100;
+	private final double gearRatio = 248/1;
 
 	public Arm() {
-		leftArmMotor.setInverted(true);
-		rightArmMotor.setInverted(false);
+		leftArmMotor.setInverted(false);
+		rightArmMotor.setInverted(true);
 
 		leftArmMotor.setIdleMode(IdleMode.kBrake);
 		rightArmMotor.setIdleMode(IdleMode.kBrake);
 
-		encodeArm.setPosition(80);	// Make sure the arm starts straight up!
+		encodeArm.setPositionConversionFactor(360/encodeArm.getCountsPerRevolution()/gearRatio);
+		encodeArm.setPosition(0);	// Make sure the arm starts straight up!
 	}
 
-	public void PrimitiveArmPivot(double pSpeed) {
+	public void primitiveArmPivot(double pSpeed) {
 			leftArmMotor.set(pSpeed);
 			rightArmMotor.set(pSpeed);
 	}
 
 	public double getAngle() {
 		return encodeArm.getPosition();
+	}
+
+	public void setCurrentAngle(double pAngle) {
+		encodeArm.setPosition(pAngle);
+	}
+
+	public void goToAngle(double pAngle) {
 	}
 }

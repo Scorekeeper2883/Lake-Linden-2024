@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.drives.AutoDrive;
@@ -27,9 +26,7 @@ public class Autos {
 	 */
 	public static Command SimpleAuto() {
 		return new SequentialCommandGroup(
-				new WaitCommand(2.0),
-				new ParallelRaceGroup(
-						new WaitCommand(3.0),
-						new AutoDrive(0.25, 0.0)));
+			new WaitCommand(10.0),
+			new AutoDrive(0.25, 0.0).withTimeout(3));
 	}
 }

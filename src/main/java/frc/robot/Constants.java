@@ -44,6 +44,7 @@ public final class Constants {
 	public static final int OPAmp = 6;
 	public static final int OPFloorIntake = 2;
 	public static final int OPReverseIntake = 4;
+	public static final int OPResetArm = 999;
 
 	/* Motor IDs */
 	public static final int leftFront = 3;
@@ -55,20 +56,4 @@ public final class Constants {
 	public static final int leftShooter = 7;
 	public static final int rightShooter = 8;
 	public static final int intakeID = 9;
-
-	/**
-	 * Returns Polarity:
-	 * 	1 for positive,
-	 * 	-1 for negative,
-	 * 	0 otherwise.
-	 */
-	public static int checkSign(double num) {
-		if (num > 0) {
-			return 1;
-		} else if (num < 0) {
-			return -1;
-		} else {
-			return 0;
-		}
-	}
 }
